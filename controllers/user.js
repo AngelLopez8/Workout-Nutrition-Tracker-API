@@ -1,6 +1,7 @@
 import sharp from 'sharp';
 
 import User from '../models/User.model.js';
+import { Schedule } from '../models/mymodels.model.js';
 
 // CREATE
 /**
@@ -111,6 +112,8 @@ export const update_user = async (req, res) => {
 
     if (!isValidOperation) return res.status(400).json({ message: 'Invalid updates!' });
 
+    req.body['schedule'] = await Schedule.findById(req.body['schedule']);
+    
     try {
         updates.forEach( update => req.user[update] = req.body[update]);
 
