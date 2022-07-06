@@ -2,14 +2,9 @@ import mongoose from 'mongoose';
 import WorkoutSchema from './Workout.schema.js';
 
 const ScheduleSchema = new mongoose.Schema({
-    numberOfDays: {
-        type: Number,
-        default: 0
-    },
-    numberOfWorkoutsPerDay: {
-        type: Number,
-        default: 0
-    },
+    daysOfTheWeek: [{
+        type: String
+    }],
     workouts: [WorkoutSchema]
 }, {
     timestamps: true

@@ -1,12 +1,41 @@
-import mongoose from 'mongoose';
-import { Progress } from '../models/mymodels.model.js';
+import { Progress } from "../models/mymodels.model.js";
+import { Schedule } from "../models/mymodels.model.js";
+
+const DaysOfTheWeek = {
+    "Sunday": 0,
+    "Monday": 1,
+    "Tuesday": 2,
+    "Wednesday": 3,
+    "Thursday": 4,
+    "Friday": 5,
+    "Saturday": 6
+};
 
 // CREATE
 /**
  * Create Progress
  */
 export const create_progress = async (req, res) => {
-    const progress = new Progress({ ...req.body});
+    
+    // Find Schedule by id to reassign on req.body
+    const schedule = await Schedule.findOne({ _id: req.body.schedule });
+    
+    // Find next workout day to set as startDate
+    const firstWorkout = schedule.daysOfTheWeek[0];
+    const firstWorkoutDay = DaysOfTheWeek[firstWorkout];
+
+    let today = new Date();
+
+    while (today.getDay() !== firstWorkoutDay) {
+        today.setDate(today.getDate() + 1);
+    }
+    
+    // Overwrite req.body with actual Objects
+    req.body.startDate = today;
+    req.body.schedule = schedule;
+
+    // Create new Progress
+    const progress = new Progress({ ...req.body, user: req.user._id });
 
     try {
         await progress.save();
@@ -54,7 +83,7 @@ export const get_progress = async (req, res) => {
  */
 export const update_progress = async (req, res) => {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['completeDate', 'weight', 'height'];
+    const allowedUpdates = ['completeDate', 'weight', 'height', 'workoutsDone'];
     const isValidOperation = updates.every( update => allowedUpdates.includes(update));
 
     if (!isValidOperation) return res.status(400).json({ message: 'Invalid updates!' });

@@ -27,10 +27,6 @@ const ExerciseSchema = new mongoose.Schema({
                 throw new Error('Time must be a positive number in seconds');
             }
         }
-    },
-    completed: {
-        type: Boolean,
-        default: false
     }
 }, {
     timestamps: true

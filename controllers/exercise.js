@@ -1,7 +1,4 @@
-import mongoose from 'mongoose';
-import ExerciseSchema from '../models/Exercise.schema.js';
-
-const Exercise = mongoose.model('Exercise', ExerciseSchema);
+import { Exercise } from '../models/mymodels.model.js';
 
 // CREATE
 /**
@@ -56,7 +53,7 @@ export const get_exercise = async (req, res) => {
  */
 export const update_exercise = async (req, res) => {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['name', 'bodyArea', 'sets', 'reps', 'time', 'completed'];
+    const allowedUpdates = ['name', 'bodyArea', 'sets', 'reps', 'time'];
     const isValidOperation = updates.every( update => allowedUpdates.includes(update));
 
     if (!isValidOperation) return res.status(400).json({ message: 'Invalid updates!' });

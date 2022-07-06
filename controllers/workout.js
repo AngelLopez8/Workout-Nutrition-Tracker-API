@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import { Workout } from '../models/mymodels.model.js';
 import { Exercise } from '../models/mymodels.model.js';
 
@@ -57,7 +56,7 @@ export const get_workout = async (req, res) => {
  */
 export const update_workout = async (req, res) => {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['name', 'description', 'dayOfTheWeek', 'completed', 'exercises'];
+    const allowedUpdates = ['name', 'description', 'exercises'];
     const isValidOperation = updates.every( update => allowedUpdates.includes(update));
 
     if (!isValidOperation) return res.status(400).json({ message: 'Invalid updates!' });

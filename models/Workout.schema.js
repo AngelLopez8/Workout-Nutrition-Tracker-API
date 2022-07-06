@@ -12,14 +12,6 @@ const WorkoutSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    dayOfTheWeek: {
-        type: String,
-        required: true
-    },
-    completed: {
-        type: Boolean,
-        default: false
-    },
     exercises: [ExerciseSchema]
 }, {
     timestamps: true
