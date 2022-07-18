@@ -112,7 +112,7 @@ export const update_user = async (req, res) => {
 
     if (!isValidOperation) return res.status(400).json({ message: 'Invalid updates!' });
 
-    req.body['schedule'] = await Schedule.findById(req.body['schedule']);
+    if (req.body['schedule'] !== null) req.body['schedule'] = await Schedule.findById(req.body['schedule']);
     
     try {
         updates.forEach( update => req.user[update] = req.body[update]);
