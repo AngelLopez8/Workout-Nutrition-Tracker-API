@@ -66,7 +66,6 @@ const UserSchema = new mongoose.Schema({
         type: ScheduleSchema,
         default: null
     },
-    progress: [ProgressSchema],
     tokens: [{
         token: {
             type: String,

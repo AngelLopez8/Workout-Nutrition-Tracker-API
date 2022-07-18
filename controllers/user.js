@@ -107,16 +107,12 @@ export const get_my_avatar = async (req, res) => {
  */
 export const update_user = async (req, res) => {
     const updates = Object.keys(req.body);
-    const allowUpdates = ['name', 'email', 'password', 'age', 'height', 'weight', 'schedule', 'progress'];
+    const allowUpdates = ['name', 'email', 'password', 'age', 'height', 'weight', 'schedule'];
     const isValidOperation = updates.every( update => allowUpdates.includes(update));
 
     if (!isValidOperation) return res.status(400).json({ message: 'Invalid updates!' });
 
     if (req.body['schedule'] !== null) req.body['schedule'] = await Schedule.findById(req.body['schedule']);
-    if (req.body['progress'] !== null) {
-        req.body['progress'] = await Progress.findById(req.body['progress']);
-        req.body['progress'] = [...req.user.progress, req.body['progress']];
-    }
     
     try {
         updates.forEach( update => req.user[update] = req.body[update]);
